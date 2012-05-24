@@ -6,7 +6,7 @@ from enthought.enable.component_editor import ComponentEditor
 import numpy
 from numpy import linspace, sin
 
-from mandelbrot_bp import mandelbrot
+from mandelbrot_cl import mandelbrot
 
 class LinePlot(HasTraits):
     plot = Instance(Plot)
@@ -34,7 +34,6 @@ class LinePlot(HasTraits):
 
         self.size_x = 800
         self.size_y = 600
-        self.num_threads = 2
 
         arr = numpy.zeros(dtype=numpy.uint32, shape=(self.size_x, self.size_y))
         rslt = mandelbrot(
@@ -43,8 +42,7 @@ class LinePlot(HasTraits):
             self.x_ubound,
             self.y_lbound,
             self.y_ubound,
-            1000,
-            self.num_threads)
+            1000)
 
         self.plotdata = ArrayPlotData(imagedata=self._get_image())
 
@@ -55,7 +53,7 @@ class LinePlot(HasTraits):
 
     def _get_image(self):
         arr = numpy.zeros(
-            dtype=numpy.uint32, 
+            dtype=numpy.uint32,
             shape=(self.size_x, self.size_y))
 
         rslt = mandelbrot(
@@ -64,8 +62,7 @@ class LinePlot(HasTraits):
             self.x_ubound,
             self.y_lbound,
             self.y_ubound,
-            1000,
-            self.num_threads)
+            1000)
 
         return arr
 
