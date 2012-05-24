@@ -1,5 +1,5 @@
 __kernel void 
-mandelbrot(__global unsigned int* output,
+mandelbrot(__global float* output,
            float xl,
            float xu,
            float yl,

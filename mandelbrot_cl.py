@@ -1,3 +1,4 @@
+import numpy as np
 import pyopencl as cl
 
 def load_program(ctx):
@@ -24,26 +25,27 @@ def mandelbrot(arr,
         cl.mem_flags.WRITE_ONLY,
         size_x * size_y)
 
+    new_arr = np.empty(shape=(size_x * size_y,), dtype=np.float32)
+
     program.mandelbrot(
         queue,
-        size_x * size_y,
+        new_arr.shape,
         None,
         dest_buf,
-        x_lbound,
-        x_ubound,
-        y_lbound,
-        y_ubound,
-        size_y,
-        size_x,
-        max_iteration)
+        np.float32(x_lbound),
+        np.float32(x_ubound),
+        np.float32(y_lbound),
+        np.float32(y_ubound),
+        np.uint32(size_y),
+        np.uint32(size_x),
+        np.uint32(max_iteration))
 
-    cl.enqueue_read_buffer(
-        self.queue,
-        self.dest_buf,
-        arr).wait()
+    # cl.enqueue_read_buffer(
+    #     queue,
+    #     dest_buf,
+    #     new_arr)
 
 def test():
-    import numpy as np
     arr = np.empty((100,100), dtype=np.uint32)
 
     mandelbrot(arr,
