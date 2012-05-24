@@ -23,9 +23,9 @@ def mandelbrot(arr,
     dest_buf = cl.Buffer(
         ctx,
         cl.mem_flags.WRITE_ONLY,
-        size_x * size_y)
+        size_x * size_y * 4)
 
-    new_arr = np.empty(shape=(size_x * size_y,), dtype=np.float32)
+    new_arr = np.zeros(shape=(size_x * size_y,), dtype=np.float32)
 
     program.mandelbrot(
         queue,
@@ -40,10 +40,13 @@ def mandelbrot(arr,
         np.uint32(size_x),
         np.uint32(max_iteration))
 
-    # cl.enqueue_read_buffer(
-    #     queue,
-    #     dest_buf,
-    #     new_arr)
+    cl.enqueue_read_buffer(
+        queue,
+        dest_buf,
+        new_arr).wait()
+
+    arr[:][:] = new_arr.reshape((size_x, size_y))
+    return new_arr
 
 def test():
     arr = np.empty((100,100), dtype=np.uint32)

@@ -1,19 +1,6 @@
 __kernel void 
 mandelbrot(__global float* output,
-           float xl,
-           float xu,
-           float yl,
-           float yu,
-           unsigned int rows,
-           unsigned int cols,
-           unsigned int max_iteration)
-{
-    unsigned int i, row, col, iteration;
-    float x0, y0, x, y, xtemp;
-
-    i = get_global_id(0);
-    row = i / cols;
-    col = row * cols + (i % cols);
+           
 
     x0 = row / rows * (yu - yl) + yl;
     y0 = col / cols * (xu - xl) + xl;
